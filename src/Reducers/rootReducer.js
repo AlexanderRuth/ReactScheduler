@@ -26,7 +26,6 @@ export function rootReducer(state = initialState, action)
 	switch(action.type)
 	{
 	    case ADD_OBJECTIVE:
-	    	console.log("Adding " + action.body.tasks);
 			return Object.assign({}, state, {objectives: state.objectives.concat(action.body)})
 
 	    default:
