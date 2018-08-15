@@ -6,7 +6,7 @@ export default class Header extends React.Component {
     render()
 	{
 		return (
-		<Navbar inverse fluid fixedTop>
+		<Navbar inverse fluid staticTop>
 		    <Navbar.Header>
 			<Navbar.Brand>
 				Scheduler

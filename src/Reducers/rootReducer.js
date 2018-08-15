@@ -21,11 +21,13 @@ export function rootReducer(state = initialState, action)
 	if (typeof state === 'undefined')
 		return initialState
 
+	console.log("STATE: ", state)
+
 	switch(action.type)
 	{
 	    case ADD_OBJECTIVE:
-			return Object.assign({}, state, {objectives: state.objectives + action.body});
-			break;
+	    	console.log("Adding " + action.body.tasks);
+			return Object.assign({}, state, {objectives: state.objectives.concat(action.body)})
 
 	    default:
 			return state;

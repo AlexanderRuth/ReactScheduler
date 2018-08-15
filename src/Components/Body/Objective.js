@@ -16,7 +16,7 @@ export class Objective extends React.Component {
 		for(var task = 0; task < this.props.tasks.length; task++)
 		{
 			tasks.push(
-				<p>this.props.tasks[task].title</p>
+				<p>{this.props.tasks[task].title}</p>
 				)
 		}
 
@@ -27,10 +27,7 @@ export class Objective extends React.Component {
 	{
 		return (
 				<Panel>
-					<Panel.Heading>{this.props.title}</Panel.Heading>
-					<Panel.Body>
 						{this.getTaskList()}
-					</Panel.Body>
 				</Panel>
 			)
 	}

@@ -19,12 +19,13 @@ export class Body extends React.Component {
 		{
 			objectives.push(<Objective title={this.props.objectives[objective].title} tasks={this.props.objectives[objective].tasks} />)
 		}
+		return objectives;
 	}
     render() {
 	
 		return ( <div>
 			{this.getObjectiveList()}
-			<Button onClick={this.props.addObjective({title: "New Objective", tasks: [{title: "hi", completed: false}]})}> Add Objective </Button>
+			<Button onClick={() => {this.props.addObjective({title: "Hi", tasks: [{title: "hi", completed: false},]})}} > Add Objective </Button>
 			</div>
 			);
     }
