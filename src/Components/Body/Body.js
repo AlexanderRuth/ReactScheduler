@@ -1,5 +1,6 @@
 import { Objective } from './Objective.js';
 import { addObjective } from '../../Creators/creators.js';
+import EditObjective from './EditObjective.js'
 import React from 'react';
 import { Button, Grid, Row, Col, Modal, FormGroup, ButtonToolbar, Panel} from 'react-bootstrap';
 
@@ -10,11 +11,15 @@ export class Body extends React.Component {
 		super(props)
 
 		this.state = {
-			addObjective: false,
+			addObjective: false,         //Whether an objective is being added or not, is the timestamp it was updated if changed. This is so the Edit Objective
+										 //Can know whether the request to render is new or old. So, if add objective is clicked, the timestamp is updated, and EditObjective reopens
+			editObjective: false,
 			objectiveToAdd: {
 				title: "",
-				tasks: [],
+				tasks: [],               //The list of tasks for the objective being created
+				timeCreated: 0,          //The time that the new object was created
 			},
+			objectiveBeingEdited: 0,	 //If an objective is being edited, not created, this is its timestamp
 			taskToAdd: {},
 		}
 
@@ -28,12 +33,12 @@ export class Body extends React.Component {
 	addTask()
 	{
 		console.log(JSON.stringify(this.state))
-		this.setState({objectiveToAdd: {title: this.state.objectiveToAdd.title, tasks: (this.state.objectiveToAdd.tasks ? this.state.objectiveToAdd.tasks.concat(this.state.taskToAdd) : [this.state.taskToAdd]) }});
+		this.setState({objectiveToAdd: {title: this.state.objectiveToAdd.title, tasks: (this.state.objectiveToAdd.tasks ? this.state.objectiveToAdd.tasks.concat(Object.assign({}, this.state.taskToAdd, {timeCreated: (new Date()).getTime()})) : [this.state.taskToAdd]) }});
 		this.forceUpdate();
 	}
 	onTaskToAddChange(e)
 	{
-		this.setState({taskToAdd: {title: e.target.value, completed: false}});
+		this.setState({taskToAdd: {title: e.target.value, completed: false, timeCreated: 0}});
 	}
 
 	onChangedTitle(e)
@@ -53,7 +58,7 @@ export class Body extends React.Component {
 		var objectives = []
 		for(var objective = 0; objective < this.props.objectives.length; objective++)
 		{
-			objectives.push(<Objective title={this.props.objectives[objective].title} id={objective} tasks={this.props.objectives[objective].tasks} />)
+			objectives.push(<Objective updateObjective={this.props.updateObjective} updateTask={this.props.updateTask} removeObjective={this.props.removeObjective} timeCreated={this.props.objectives[objective].timeCreated} title={this.props.objectives[objective].title} id={objective} tasks={this.props.objectives[objective].tasks} />)
 		}
 		return objectives
 	}
@@ -88,6 +93,7 @@ export class Body extends React.Component {
 	}
     render() {
 
+    	console.log("rerendering")
     	var tasksBeingAdded = []
 
     	if(this.state.objectiveToAdd.tasks)
@@ -102,47 +108,15 @@ export class Body extends React.Component {
 					</Panel>)
 				}
 	
-		return ( <div>
+		return (
+			<div>
+			<div style={{textAlign: "center"}}>
+				<Button style={{marginBottom: "20px"}} bsStyle='success' onClick={() => {this.setState({addObjective: (new Date()).getTime()})}} > Add Objective </Button>
+			</div>
 			{this.objectivesToGrid(this.getObjectiveList())}
-			<Button onClick={() => {this.setState({addObjective: true})}} > Add Objective </Button>
 
 			{/*Creating new objectives*/}
-			<Modal show={this.state.addObjective}>
-				<Modal.Header>
-					Add Objective
-				</Modal.Header>
-				<Modal.Body>
-					<table>
-						<tr>
-							<td>
-								Objective Title: 
-							</td>
-							<td style={{width: "5%"}}>
-							</td>
-							<td>
-								<input onChange={this.onChangedTitle} type="text"/>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Task:           
-							</td>
-							<td style={{width: "5%"}}>
-							</td>
-							<td>
-								<input onChange={this.onTaskToAddChange} style={{display: "inline"}} type="text"/>
-								<Button style={{marginLeft: "5px"}} onClick={() => {this.addTask()}} >Add</Button>
-							</td>
-						</tr>
-					</table>
-
-					{tasksBeingAdded}
-					<ButtonToolbar style={{margin: "10px"}}>
-						<Button bsStyle='success' onClick={() => {this.props.addObjective(this.state.objectiveToAdd); this.setState({addObjective: false, objectiveToAdd: {title: "", tasks: []}})}}>Submit</Button>
-						<Button bsStyle='danger' onClick={() => {this.setState({addObjective: false})}}>Cancel</Button>
-					</ButtonToolbar>
-				</Modal.Body>
-			</Modal>
+			{this.state.addObjective ? <EditObjective timestamp={this.state.addObjective} dispatch={this.props.addObjective}/> : null}	
 			</div>
 			);
     }

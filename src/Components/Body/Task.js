@@ -15,6 +15,7 @@ export default class Task extends React.Component
 
 	toggleState()
 	{
+		this.props.updateTask(this.props.timeCreated, {title: this.props.title, completed: (this.state.completed ? false : true), timeCreated: this.props.timeCreated})
 		this.setState({completed: (this.state.completed ? false : true)});
 	}
 	render()
@@ -22,7 +23,9 @@ export default class Task extends React.Component
 		return (
 		<Panel style={{overflow: "auto", padding: "10px"}}>
 				<p style={{display: "inline"}}>{this.props.title}</p>
-				<Button onClick={ () => {this.toggleState()} } style={{float: "right"}} bsStyle={this.state.completed ? 'success' : 'danger'}>{this.state.completed ? "Completed" : "Incomplete"}</Button>
+				<Button onClick={ () => {this.toggleState()} } style={{float: "right"}} bsStyle={this.state.completed ? 'success' : 'danger'}>
+					{this.state.completed ? "Completed" : "Incomplete"}
+				</Button>
 		</Panel>)
 	}
 }

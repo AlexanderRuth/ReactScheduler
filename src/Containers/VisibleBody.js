@@ -1,6 +1,6 @@
 import {connect} from 'react-redux'
 import { Body } from '../Components/Body/Body.js'
-import {addObjective} from '../Creators/creators.js'
+import {addObjective, removeObjective, updateTask, updateObjective} from '../Creators/creators.js'
 
 const mapStateToProps = state => {
 
@@ -12,7 +12,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 
 	return {
-		addObjective: (objective) => {dispatch(addObjective(objective))}
+		addObjective: (objective) => {dispatch(addObjective(objective))},
+		removeObjective: (timeCreated) => {dispatch(removeObjective(timeCreated))},
+		updateTask: (timeCreated, updatedTask) => {dispatch(updateTask(timeCreated, updatedTask))},
+		updateObjective: (updatedObjective) => {dispatch(updateObjective(updatedObjective))}
 	}
 }
 

@@ -1,2 +1,5 @@
 export const ADD_TASK = "ADD_TASK"
 export const ADD_OBJECTIVE = "ADD_OBJECTIVE"
+export const REMOVE_OBJECTIVE = "REMOVE_OBJECTIVE"
+export const UPDATE_TASK = "UPDATE_TASK"
+export const UPDATE_OBJECTIVE = "UPDATE_OBJECTIVE"
